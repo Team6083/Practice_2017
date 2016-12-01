@@ -1,13 +1,11 @@
-
 package org.usfirst.frc.team6083.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.CANTalon;
+
+import Systems.DriveBase;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -20,12 +18,6 @@ public class Robot extends IterativeRobot {
     final String customAuto = "My Auto";
     String autoSelected;
     SendableChooser chooser;
-    VictorSP motor1=new VictorSP(1);
-    VictorSP motor2=new VictorSP(0);
-    
-    Joystick joy = new Joystick(0);
-    SmartDashboard dash = new SmartDashboard();
-    double speedl =0, speedr =0;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -72,37 +64,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	if(joy.getRawAxis(1) < 0){
-    	speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0))/4;
-    	speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0))/4;
-    	} else {
-        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0))/4;
-        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0))/4;	
-    	}
-    if(joy.getRawAxis(1)  == 0){
-    	if(speedl >= 0.05 ){
-    		 speedl=speedl-0.05;	
-    					}else if(speedl <= -0.05){
-    						speedl=speedl+0.05;
-    					}else {
-    						speedl=0;
-    }   
-    if(speedr >= 0.05){
-    speedr=speedr-0.05;
-    }else if(speedr <= -0.05){
-		speedr=speedr+0.05;
-	}else {
-    speedr=0;
-    }
-    }
-    if(joy.getRawButton(9)){
-    speedl=speedl*2;
-    speedr=speedr*2;
-    }
-	motor1.set(speedl);
-	motor2.set(speedr);
-	SmartDashboard.putNumber("left", motor1.get());
-	SmartDashboard.putNumber("right", motor2.get());
+    	DriveBase.teleOp();
     }
     
     /**
