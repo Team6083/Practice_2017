@@ -14,6 +14,7 @@ public class DriveBase {
     static VictorSP motor2;
     static Joystick joy;
     static double speedl = 0, speedr = 0, speed_down_value = 4.0;
+    static boolean speedup = false;
     
     public static void init(){
     	motor1 = new VictorSP(motor1_channel);
@@ -26,6 +27,7 @@ public class DriveBase {
 		SmartDashboard.putNumber("left", motor1.get());
 		SmartDashboard.putNumber("right", motor2.get());
 		speed_down_value = SmartDashboard.getNumber("speed_down_value");
+		SmartDashboard.putBoolean("speedup", speedup);
     }
     
     public static void teleOp(){
@@ -60,6 +62,10 @@ public class DriveBase {
     	if(joy.getRawButton(9)){
     		speedl=speedl*2;
     		speedr=speedr*2;
+    		speedup = true;
+    	}
+    	else{
+    		speedup = false;
     	}
 		motor1.set(speedl);
 		motor2.set(speedr);
