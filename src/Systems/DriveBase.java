@@ -8,7 +8,7 @@ public class DriveBase {
 	static final int motor1_channel = 1;
 	static final int motor2_channel = 2;
 	static final int Joystick_port = 0;
-	static final int joy_select = 0;//0 is XBox 1 is 3DPro
+	static final int joy_select = 1;//0 is XBox 1 is 3DPro
 	
     static VictorSP motor1;
     static VictorSP motor2;
@@ -31,11 +31,11 @@ public class DriveBase {
     public static void teleOp(){
     	dashboard();
     	if(joy.getRawAxis(1) < 0){
-    		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0))/4;//left wheel's speed
-    		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0))/4;//right wheel's speed
+    		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0))/speed_down_value;//left wheel's speed
+    		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0))/speed_down_value;//right wheel's speed
     	} else {
-        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0))/4;//left wheel's speed
-        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0))/4;//right wheel's speed
+        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0))/speed_down_value;//left wheel's speed
+        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0))/speed_down_value;//right wheel's speed
     	}
     	if(joy.getRawAxis(1)  == 0){
     		if(speedl >= 0.05 ){
