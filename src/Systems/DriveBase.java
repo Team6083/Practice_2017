@@ -36,8 +36,8 @@ public class DriveBase {
     		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0)+joy.getRawAxis(2))/speed_down_value;//left wheel's speed
     		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0)-joy.getRawAxis(2))/speed_down_value;//right wheel's speed
     	} else {
-        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0))/speed_down_value;//left wheel's speed
-        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0))/speed_down_value;//right wheel's speed
+        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0)+joy.getRawAxis(2))/speed_down_value;//left wheel's speed
+        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0)-joy.getRawAxis(2))/speed_down_value;//right wheel's speed
     	}
     	if(joy.getRawAxis(1)  == 0){
     		if(speedl >= 0.05 ){
