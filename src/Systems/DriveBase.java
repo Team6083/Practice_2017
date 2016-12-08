@@ -33,8 +33,8 @@ public class DriveBase {
     public static void teleOp(){
     	dashboard();
     	if(joy.getRawAxis(1) < 0){
-    		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0))/speed_down_value;//left wheel's speed
-    		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0))/speed_down_value;//right wheel's speed
+    		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0)+joy.getRawAxis(2))/speed_down_value;//left wheel's speed
+    		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0)-joy.getRawAxis(2))/speed_down_value;//right wheel's speed
     	} else {
         	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0))/speed_down_value;//left wheel's speed
         	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0))/speed_down_value;//right wheel's speed
