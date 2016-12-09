@@ -11,12 +11,14 @@ public class DriveBase {
 	static final int Joystick_port = 0;
 	static final int joy_select = 1;//0 is XBox 1 is 3DPro
 	
+	static final double error_range = 0.04;
+	
     static VictorSP motor1;
     static VictorSP motor2;
     static VictorSP frontmotor1;
     static Joystick joy;
     
-    static double speedl = 0, speedr = 0, speed_down_value = 4.0, a, b;
+    static double speedl = 0, speedr = 0, speed_down_value = 4.0, joy_left_x, joy_left_y;
     static boolean speedup = false;
     static int status_frontmotor1 = 0;
     
@@ -38,37 +40,43 @@ public class DriveBase {
     
     public static void teleOp(){
     	dashboard();
+    	
     	if(joy.getRawAxis(1) < 0){
-    		a=-joy.getRawAxis(1);
-    		a=a-a%0.04;
-    	}else {
-    		a=joy.getRawAxis(1);
-    		a=a-a%0.04;
-    		a=a*-1;
+    		joy_left_y=-joy.getRawAxis(1);
+    		joy_left_y=joy_left_y-joy_left_y%error_range;
     	}
+    	else {
+    		joy_left_y=joy.getRawAxis(1);
+    		joy_left_y=joy_left_y-joy_left_y%error_range;
+    		joy_left_y=-joy_left_y;
+    	}
+    	
     	if(joy.getRawAxis(0) < 0){
-    		b=-joy.getRawAxis(0);
-    		b=b%0.04;
-    		b=-1*b;
-    	}else {
-    		b=joy.getRawAxis(0);
-    		b=b%0.04;
+    		joy_left_x=-joy.getRawAxis(0);
+    		joy_left_x=joy_left_x%error_range;
+    		joy_left_x=-joy_left_x;
     	}
+    	else {
+    		joy_left_x=joy.getRawAxis(0);
+    		joy_left_x=joy_left_x%error_range;
+    	}
+    	
     	if(joy.getRawAxis(1) < 0){
-    	speedl=(a+b)/4;
-    	speedr=(a-b)/4;
-    	} else {
-        	speedl=(a-b)/4;
-        	speedr=(a+b)/4;	
+    		speedl=(joy_left_y+joy_left_x)/speed_down_value;
+    		speedr=(joy_left_y-joy_left_x)/speed_down_value;
+    	} 
+    	else {
+        	speedl=(joy_left_y-joy_left_x)/speed_down_value;
+        	speedr=(joy_left_y+joy_left_x)/speed_down_value;	
     	}
-    if(joy.getRawButton(9)){
-    speedl=speedl*2;
-    speedr=speedr*2;
-    }
-	motor1.set(speedl);
-	motor2.set(speedr);
-	SmartDashboard.putNumber("left", motor1.get());
-	SmartDashboard.putNumber("right", motor2.get());
+    	
+    	if(joy.getRawButton(9)){//press button 9 for boost
+    		speedl=speedl*2;
+    		speedr=speedr*2;
+    	}
+    	
+    	motor1.set(speedl);//set motor speed
+    	motor2.set(speedr);
     }
    
 }
