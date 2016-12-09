@@ -33,16 +33,7 @@ public class DriveBase {
 		SmartDashboard.putNumber("left", motor1.get());
 		SmartDashboard.putNumber("right", motor2.get());
 		speed_down_value = SmartDashboard.getNumber("speed_down_value");
-		SmartDashboard.putBoolean("speedup", speedup);/*
-		if(status_frontmotor1 == 1){
-			SmartDashboard.putString("frontmotor1_status", "UP");
-		}
-		else if(status_frontmotor1 == 2){
-			SmartDashboard.putString("frontmotor1_status", "DOWN");
-		}
-		else{
-			SmartDashboard.putString("frontmotor1_status", "STOP");
-		}*/
+		SmartDashboard.putBoolean("speedup", speedup);
     }
     
     public static void teleOp(){
@@ -73,18 +64,6 @@ public class DriveBase {
     if(joy.getRawButton(9)){
     speedl=speedl*2;
     speedr=speedr*2;
-    }
-    if(joy.getRawButton(5)){
-    	frontmotor1.set(0.5);
-    	status_frontmotor1 = 2;
-    //	frontmotor2.set(-0.5);
-    }else if(joy.getRawButton(6)){
-    	frontmotor1.set(-0.5);
-    	status_frontmotor1 = 1;
-    	//frontmotor2.set(0.5);
-    }else {
-    	frontmotor1.set(0);
-   // 	frontmotor2.set(0);
     }
 	motor1.set(speedl);
 	motor2.set(speedr);
