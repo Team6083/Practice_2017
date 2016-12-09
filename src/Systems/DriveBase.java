@@ -5,13 +5,15 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBase {
-	static final int motor1_channel = 1;
-	static final int motor2_channel = 2;
+	static final int motor1_channel = 0;
+	static final int motor2_channel = 1;
+	static final int frontmotor1_channel = 1;
 	static final int Joystick_port = 0;
 	static final int joy_select = 1;//0 is XBox 1 is 3DPro
 	
     static VictorSP motor1;
     static VictorSP motor2;
+    static VictorSP frontmotor1;
     static Joystick joy;
     static double speedl = 0, speedr = 0, speed_down_value = 4.0, a, b;
     static boolean speedup = false;
@@ -20,6 +22,7 @@ public class DriveBase {
     public static void init(){
     	motor1 = new VictorSP(motor1_channel);
     	motor2 = new VictorSP(motor2_channel);
+    	frontmotor1 = new VictorSP(frontmotor1_channel);
     	joy= new Joystick(Joystick_port);
     	SmartDashboard.putNumber("speed_down_value", speed_down_value);
     }
@@ -60,16 +63,16 @@ public class DriveBase {
     speedl=speedl*2;
     speedr=speedr*2;
     }
-   /* if(joy.getRawButton(5)){
+    if(joy.getRawButton(5)){
     	frontmotor1.set(0.5);
-    	frontmotor2.set(-0.5);
+    //	frontmotor2.set(-0.5);
     }else if(joy.getRawButton(6)){
     	frontmotor1.set(-0.5);
-    	frontmotor2.set(0.5);
+    	//frontmotor2.set(0.5);
     }else {
     	frontmotor1.set(0);
-    	frontmotor2.set(0);
-    }*/
+   // 	frontmotor2.set(0);
+    }
 	motor1.set(speedl);
 	motor2.set(speedr);
 	SmartDashboard.putNumber("left", motor1.get());
