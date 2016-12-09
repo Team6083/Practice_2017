@@ -13,8 +13,9 @@ public class DriveBase {
     static VictorSP motor1;
     static VictorSP motor2;
     static Joystick joy;
-    static double speedl = 0, speedr = 0, speed_down_value = 4.0;
+    static double speedl = 0, speedr = 0, speed_down_value = 4.0, a, b;
     static boolean speedup = false;
+
     
     public static void init(){
     	motor1 = new VictorSP(motor1_channel);
@@ -33,41 +34,46 @@ public class DriveBase {
     public static void teleOp(){
     	dashboard();
     	if(joy.getRawAxis(1) < 0){
-    		speedl=(-joy.getRawAxis(1)-joy.getRawAxis(0)-joy.getRawAxis(2))/speed_down_value;//left wheel's speed
-    		speedr=(-joy.getRawAxis(1)+joy.getRawAxis(0)+joy.getRawAxis(2))/speed_down_value;//right wheel's speed
+    		a=-joy.getRawAxis(1);
+    		a=a-a%0.04;
+    	}else {
+    		a=joy.getRawAxis(1);
+    		a=a-a%0.04;
+    		a=a*-1;
+    	}
+    	if(joy.getRawAxis(0) < 0){
+    		b=-joy.getRawAxis(0);
+    		b=b%0.04;
+    		b=-1*b;
+    	}else {
+    		b=joy.getRawAxis(0);
+    		b=b%0.04;
+    	}
+    	if(joy.getRawAxis(1) < 0){
+    	speedl=(a+b)/4;
+    	speedr=(a-b)/4;
     	} else {
-        	speedl=(-joy.getRawAxis(1)+joy.getRawAxis(0)-joy.getRawAxis(2))/speed_down_value;//left wheel's speed
-        	speedr=(-joy.getRawAxis(1)-joy.getRawAxis(0)+joy.getRawAxis(2))/speed_down_value;//right wheel's speed
+        	speedl=(a-b)/4;
+        	speedr=(a+b)/4;	
     	}
-    	if(joy.getRawAxis(1)  == 0){
-    		if(speedl >= 0.05 ){
-    			speedl=speedl-0.05;	
-    		}
-    		else if(speedl <= -0.05){
-    			speedl=speedl+0.05;
-    		}
-    		else {
-    			speedl=0;
-    		}   
-    		if(speedr >= 0.05){
-    			speedr=speedr-0.05;
-    		}
-    		else if(speedr <= -0.05){
-    			speedr=speedr+0.05;
-    		}
-    		else {
-    			speedr=0;
-    		}
-    	}
-    	if(joy.getRawButton(9)){
-    		speedl=speedl*2;
-    		speedr=speedr*2;
-    		speedup = true;
-    	}
-    	else{
-    		speedup = false;
-    	}
-		motor1.set(speedl);
-		motor2.set(speedr);
+    if(joy.getRawButton(9)){
+    speedl=speedl*2;
+    speedr=speedr*2;
     }
+   /* if(joy.getRawButton(5)){
+    	frontmotor1.set(0.5);
+    	frontmotor2.set(-0.5);
+    }else if(joy.getRawButton(6)){
+    	frontmotor1.set(-0.5);
+    	frontmotor2.set(0.5);
+    }else {
+    	frontmotor1.set(0);
+    	frontmotor2.set(0);
+    }*/
+	motor1.set(speedl);
+	motor2.set(speedr);
+	SmartDashboard.putNumber("left", motor1.get());
+	SmartDashboard.putNumber("right", motor2.get());
+    }
+   
 }
