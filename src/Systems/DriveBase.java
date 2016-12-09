@@ -15,9 +15,11 @@ public class DriveBase {
     static VictorSP motor2;
     static VictorSP frontmotor1;
     static Joystick joy;
+    
     static double speedl = 0, speedr = 0, speed_down_value = 4.0, a, b;
     static boolean speedup = false;
-
+    static int status_frontmotor1 = 0;
+    
     
     public static void init(){
     	motor1 = new VictorSP(motor1_channel);
@@ -32,6 +34,15 @@ public class DriveBase {
 		SmartDashboard.putNumber("right", motor2.get());
 		speed_down_value = SmartDashboard.getNumber("speed_down_value");
 		SmartDashboard.putBoolean("speedup", speedup);
+		if(status_frontmotor1 == 1){
+			SmartDashboard.putString("frontmotor1_status", "UP");
+		}
+		else if(status_frontmotor1 == 2){
+			SmartDashboard.putString("frontmotor1_status", "DOWN");
+		}
+		else{
+			SmartDashboard.putString("frontmotor1_status", "STOP");
+		}
     }
     
     public static void teleOp(){
@@ -65,9 +76,11 @@ public class DriveBase {
     }
     if(joy.getRawButton(5)){
     	frontmotor1.set(0.5);
+    	status_frontmotor1 = 2;
     //	frontmotor2.set(-0.5);
     }else if(joy.getRawButton(6)){
     	frontmotor1.set(-0.5);
+    	status_frontmotor1 = 1;
     	//frontmotor2.set(0.5);
     }else {
     	frontmotor1.set(0);
