@@ -36,29 +36,29 @@ public class DriveBase {
 		SmartDashboard.putNumber("right", motor2.get());
 		speed_down_value = SmartDashboard.getNumber("speed_down_value");
 		SmartDashboard.putBoolean("speedup", speedup);
+		SmartDashboard.putNumber("joy_left_x", joy_left_x);
+		SmartDashboard.putNumber("joy_left_y", joy_left_y);
     }
     
     public static void teleOp(){
     	dashboard();
     	
     	if(joy.getRawAxis(1) < 0){
-    		joy_left_y=-joy.getRawAxis(1);
-    		joy_left_y=joy_left_y-joy_left_y%error_range;
+    		if(joy.getRawAxis(1)>error_range) joy_left_y = 0;
+    		else joy_left_y = joy.getRawAxis(1);
     	}
     	else {
-    		joy_left_y=joy.getRawAxis(1);
-    		joy_left_y=joy_left_y-joy_left_y%error_range;
-    		joy_left_y=-joy_left_y;
+    		if(joy.getRawAxis(1)< error_range) joy_left_y = 0;
+    		else joy_left_y = joy.getRawAxis(1);
     	}
     	
     	if(joy.getRawAxis(0) < 0){
-    		joy_left_x=-joy.getRawAxis(0);
-    		joy_left_x=joy_left_x%error_range;
-    		joy_left_x=-joy_left_x;
+    		if(joy.getRawAxis(0)>error_range) joy_left_x = 0;
+    		else joy_left_x = joy.getRawAxis(0);
     	}
     	else {
-    		joy_left_x=joy.getRawAxis(0);
-    		joy_left_x=joy_left_x%error_range;
+    		if(joy.getRawAxis(0)< error_range) joy_left_x = 0;
+    		else joy_left_x = joy.getRawAxis(0);
     	}
     	
     	if(joy.getRawAxis(1) < 0){
