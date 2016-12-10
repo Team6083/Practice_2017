@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveBase {
 	static final int motor1_channel = 0;
 	static final int motor2_channel = 1;
-	static final int frontmotor1_channel = 1;
+	static final int frontmotor1_channel = 2;
 	static final int Joystick_port = 0;
 	static final int joy_select = 1;//0 is XBox 1 is 3DPro
 	
