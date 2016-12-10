@@ -85,15 +85,15 @@ public class DriveBase {
         	default:
         	//Control with 3DPro remote
         		if(joy.getRawAxis(1) < 0){
-            		speedl=(-joy_left_y-joy_left_x-joy.getRawAxis(2))/speed_down_value;//left wheel's speed
-            		speedr=(-joy_left_y+joy_left_x+joy.getRawAxis(2))/speed_down_value;//right wheel's speed
+            		speedl=(-joy_left_y-joy_left_x-joy.getRawAxis(2));//left wheel's speed
+            		speedr=(-joy_left_y+joy_left_x+joy.getRawAxis(2));//right wheel's speed
             	} else {
-                	speedl=(-joy_left_y+joy_left_x-joy.getRawAxis(2))/speed_down_value;//left wheel's speed
-                	speedr=(-joy_left_y-joy_left_x+joy.getRawAxis(2))/speed_down_value;//right wheel's speed
+                	speedl=(-joy_left_y+joy_left_x-joy.getRawAxis(2));//left wheel's speed
+                	speedr=(-joy_left_y-joy_left_x+joy.getRawAxis(2));//right wheel's speed
             	}
                 break;
     	}
-    	
+    	/*
     	if(joy_left_y  == 0){
     		if(speedl >= 0.05 ){
     			speedl=speedl-0.05;	
@@ -113,16 +113,10 @@ public class DriveBase {
     		else {
     			speedr=0;
     		}
-    	}
+    	}*/
     	
-    	if(joy_left_y < 0){
-    		speedl=speedl/speed_down_value;
-    		speedr=speedr/speed_down_value;
-    	} 
-    	else {
-        	speedl=speedl/speed_down_value;
-        	speedr=speedr/speed_down_value;	
-    	}
+		speedl=speedl/speed_down_value;
+		speedr=speedr/speed_down_value;
     	
     	if(joy.getRawButton(9)){//press button 9 for boost
     		speedl=speedl*2;
