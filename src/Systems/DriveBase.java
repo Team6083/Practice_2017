@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBase {
-	static final int motor1_channel = 0;
-	static final int motor2_channel = 1;
+	static final int motor1_channel = 1;
+	static final int motor2_channel = 0;
 	static final int Joystick_port = 0;
-	static final int joy_select = 1;//0 is XBox 1 is 3DPro
+	static final int joy_select = 0;//0 is XBox 1 is 3DPro
 	
 	static final double error_range = 0.04;
 	
@@ -38,6 +38,8 @@ public class DriveBase {
     public static void dashboard(){
 		SmartDashboard.putNumber("left", motor1.get());
 		SmartDashboard.putNumber("right", motor2.get());
+		SmartDashboard.putNumber("X",joy_left_x);
+		SmartDashboard.putNumber("Y",joy_left_y);
 		speed_down_value = SmartDashboard.getNumber("speed_down_value");
 		SmartDashboard.putBoolean("speedup", speedup);
 		joy_mode_Selected = (String) joy_mode.getSelected();
@@ -47,42 +49,92 @@ public class DriveBase {
     public static void teleOp(){
     	dashboard();
     	
-    	//fix joystick's error
-    	if(joy.getRawAxis(1) < 0){
-    		if(joy.getRawAxis(1)>error_range) joy_left_y = 0;
-    		else joy_left_y = joy.getRawAxis(1);
-    	}
-    	else {
-    		if(joy.getRawAxis(1)< error_range) joy_left_y = 0;
-    		else joy_left_y = joy.getRawAxis(1);
-    	}
-    	
-    	if(joy.getRawAxis(0) < 0){
-    		if(joy.getRawAxis(0)>error_range) joy_left_x = 0;
-    		else joy_left_x = joy.getRawAxis(0);
-    	}
-    	else {
-    		if(joy.getRawAxis(0)< error_range) joy_left_x = 0;
-    		else joy_left_x = joy.getRawAxis(0);
-    	}
     	
     	
     	
     	switch(joy_mode_Selected) {
     		case joy_xbox:
             //Control with XBox remote 
-    	    	if(joy_left_y < 0){
-    	    		speedl=(joy_left_y+joy_left_x);
-    	    		speedr=(joy_left_y-joy_left_x);
-    	    	} 
-    	    	else {
-    	        	speedl=(joy_left_y-joy_left_x);
-    	        	speedr=(joy_left_y+joy_left_x);	
+    			if(joy.getRawAxis(1) <= -error_range){
+    	    		joy_left_y=-joy.getRawAxis(1);
+    	    		joy_left_y=joy_left_y*100;
+    	    		joy_left_y=joy_left_y-(joy_left_y%(error_range*100));
+    	    		joy_left_y=joy_left_y/100;
+    	    	}else if(joy.getRawAxis(1)>=error_range){
+    	    		joy_left_y=joy.getRawAxis(1);
+    	    		joy_left_y=joy_left_y*100;
+    	    		joy_left_y=joy_left_y-(joy_left_y%(error_range*100));
+    	    		joy_left_y=joy_left_y/100;
+    	    		joy_left_y=-joy_left_y;
+    	    	}else {
+    	    		joy_left_y=0;
     	    	}
-    	    	
+    	    	if(joy.getRawAxis(0) <= -error_range){
+    	    		joy_left_x=-joy.getRawAxis(0);
+    	    		joy_left_x=joy_left_x*100;
+    	    		joy_left_x=joy_left_x-(joy_left_x%(error_range*100));
+    	    		joy_left_x=joy_left_x/100;
+    	    		joy_left_x=-joy_left_x;
+    	    	}else if(joy.getRawAxis(0) >= error_range){
+    	    		joy_left_x=joy.getRawAxis(0);
+    	    		joy_left_x=joy_left_x*100;
+    	    		joy_left_x=joy_left_x-(joy_left_x%(error_range*100));
+    	    		joy_left_x=joy_left_x/100;
+    	    	}else{
+    	    		joy_left_x=0;
+    	    	}
+    	    	//	speedl=(joy_left_y+joy_left_x);
+        	    //	speedr=(joy_left_y-joy_left_x);
+        	    	speedr=(joy_left_y+joy_left_x)/speed_down_value;
+        	    	speedl=(joy_left_y-joy_left_x)/speed_down_value;
+        	  
+        	    if(joy.getRawButton(9)){
+        	    speedl=speedl*2;
+        	    speedr=speedr*2;
+        	    }
+        		motor1.set(speedl);
+        		motor2.set(speedr);
                 break;
         	case joy_3dpro:
+        		
         	default:
+        		//fix joystick's error
+        		if(joy.getRawAxis(1) < 0){
+            		if(joy.getRawAxis(1)>-error_range) joy_left_y = 0;
+            		else joy_left_y = joy.getRawAxis(1);
+            	}
+            	else {
+            		if(joy.getRawAxis(1)< error_range) joy_left_y = 0;
+            		else joy_left_y = joy.getRawAxis(1);
+            	}
+            	
+            	if(joy.getRawAxis(0) < 0){
+            		if(joy.getRawAxis(0)>error_range) joy_left_x = 0;
+            		else joy_left_x = joy.getRawAxis(0);
+            	}
+            	else {
+            		if(joy.getRawAxis(0)< error_range) joy_left_x = 0;
+            		else joy_left_x = joy.getRawAxis(0);
+            	}
+            	//fix joystick's error
+        		if(joy.getRawAxis(1) < 0){
+            		if(joy.getRawAxis(1)>-error_range) joy_left_y = 0;
+            		else joy_left_y = joy.getRawAxis(1);
+            	}
+            	else {
+            		if(joy.getRawAxis(1)< error_range) joy_left_y = 0;
+            		else joy_left_y = joy.getRawAxis(1);
+            	}
+            	
+            	if(joy.getRawAxis(0) < 0){
+            		if(joy.getRawAxis(0)>error_range) joy_left_x = 0;
+            		else joy_left_x = joy.getRawAxis(0);
+            	}
+            	else {
+            		if(joy.getRawAxis(0)< error_range) joy_left_x = 0;
+            		else joy_left_x = joy.getRawAxis(0);
+            	}
+            	
         	//Control with 3DPro remote
         		if(joy.getRawAxis(1) < 0){
             		speedl=(-joy_left_y-joy_left_x-joy.getRawAxis(2));//left wheel's speed
@@ -91,30 +143,23 @@ public class DriveBase {
                 	speedl=(-joy_left_y+joy_left_x-joy.getRawAxis(2));//left wheel's speed
                 	speedr=(-joy_left_y-joy_left_x+joy.getRawAxis(2));//right wheel's speed
             	}
+                //test
+        		speedl=speedl/speed_down_value;
+        		speedr=speedr/speed_down_value;
+            	
+            	if(joy.getRawButton(9)){//press button 9 for boost
+            		speedl=speedl*2;
+            		speedr=speedr*2;
+            		speedup = true;
+            	}
+            	else{
+            		speedup = false;
+            	}
+        		motor1.set(speedl);
+        		motor2.set(speedr);
                 break;
     	}
     	/*
-    	if(joy_left_y  == 0){
-    		if(speedl >= 0.05 ){
-    			speedl=speedl-0.05;	
-    		}
-    		else if(speedl <= -0.05){
-    			speedl=speedl+0.05;
-    		}
-    		else {
-    			speedl=0;
-    		}   
-    		if(speedr >= 0.05){
-    			speedr=speedr-0.05;
-    		}
-    		else if(speedr <= -0.05){
-    			speedr=speedr+0.05;
-    		}
-    		else {
-    			speedr=0;
-    		}
-    	}*/
-    	
 		speedl=speedl/speed_down_value;
 		speedr=speedr/speed_down_value;
     	
@@ -127,6 +172,6 @@ public class DriveBase {
     		speedup = false;
     	}
 		motor1.set(speedl);
-		motor2.set(speedr);
+		motor2.set(speedr);*/
     }
 }
